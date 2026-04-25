@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmacoSafe — Precision Drug Safety Powered by Your Genome</title>
+    <meta name="description" content="AI-driven pharmacogenomics adverse drug reaction predictor with fairness auditing across populations. Upload your genetic data for personalized drug safety analysis.">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/animations.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#hero" class="nav-logo">
+            💊 <span>PharmacoSafe</span>
+        </a>
+        <ul class="nav-links">
+            <li><a class="nav-link active" data-section="hero">Home</a></li>
+            <li><a class="nav-link" data-section="input">Analyze</a></li>
+            <li><a class="nav-link" data-section="results">Results</a></li>
+            <li><a class="nav-link" data-section="drugs">Drug Lookup</a></li>
+            <li><a class="nav-link" data-section="fairness">Fairness</a></li>
+        </ul>
+    </nav>
+
+    <!-- ═══════════════ HERO SECTION ═══════════════ -->
+    <section id="hero" class="section">
+        <div class="hero-content">
+            <h1>Precision Drug Safety<br><span class="gradient-text">Powered by Your Genome</span></h1>
+            <p class="hero-subtitle">
+                AI-driven pharmacogenomics that predicts adverse drug reactions before they happen —
+                with fairness auditing across every population.
+            </p>
+            <div class="hero-cta">
+                <button class="btn btn-primary btn-lg" onclick="scrollToSection('input')">
+                    🧬 Analyze Your Risk
+                </button>
+                <button class="btn btn-secondary btn-lg" onclick="scrollToSection('drugs')" style="margin-left: 12px;">
+                    💊 Explore Drugs
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value gradient-text" id="stat-drugs">15</div>
+                    <div class="hero-stat-label">Drugs Analyzed</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value gradient-text" id="stat-genes">8</div>
+                    <div class="hero-stat-label">Pharmacogenes</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value gradient-text" id="stat-pops">5</div>
+                    <div class="hero-stat-label">Populations</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value gradient-text" id="stat-patients">3,000</div>
+                    <div class="hero-stat-label">Training Samples</div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            Scroll to explore
+            <span class="scroll-arrow"></span>
+        </div>
+    </section>
+
+    <!-- ═══════════════ INPUT SECTION ═══════════════ -->
+    <section id="input" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>🧬 <span class="gradient-text">Patient Analysis</span></h2>
+                <p>Upload your pharmacogenomic data, enter patient details manually, or explore with demo profiles.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs reveal" id="input-tabs">
+                <button class="tab active" data-tab="upload">📤 Upload Data</button>
+                <button class="tab" data-tab="manual">✍️ Manual Entry</button>
+                <button class="tab" data-tab="demo">👤 Demo Patients</button>
+            </div>
+
+            <!-- Upload Tab -->
+            <div class="tab-content active" id="tab-upload">
+                <div class="glass-card reveal">
+                    <div class="upload-zone" id="upload-zone">
+                        <span class="upload-icon">📁</span>
+                        <p class="upload-text">
+                            Drag & drop your file here or <strong>click to browse</strong>
+                        </p>
+                        <p class="upload-formats">Supported: CSV, JSON • Max 10MB</p>
+                        <input type="file" class="upload-file-input" id="file-input" accept=".csv,.json">
+                    </div>
+                    <div class="file-preview" id="file-preview">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <strong id="file-name"></strong>
+                                <span id="file-size" style="color: var(--text-muted); margin-left: 8px;"></span>
+                            </div>
+                            <button class="btn btn-sm btn-danger" onclick="clearUpload()">✕ Remove</button>
+                        </div>
+                        <p id="file-patients" style="margin-top: 8px; color: var(--text-secondary);"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Entry Tab -->
+            <div class="tab-content" id="tab-manual">
+                <div class="glass-card reveal">
+                    <form id="manual-form">
+                        <!-- Drug Selection -->
+                        <div class="form-group">
+                            <label class="form-label">Target Drug</label>
+                            <select class="form-select" id="drug-select" required>
+                                <option value="">Select a drug...</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-3">
+                            <div class="form-group">
+                                <label class="form-label">Age</label>
+                                <input type="number" class="form-input" id="input-age" value="50" min="1" max="120">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Sex</label>
+                                <select class="form-select" id="input-sex">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Population</label>
+                                <select class="form-select" id="input-population">
+                                    <option value="EUR">European</option>
+                                    <option value="AFR">African</option>
+                                    <option value="EAS">East Asian</option>
+                                    <option value="SAS">South Asian</option>
+                                    <option value="AMR">Admixed American</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-3">
+                            <div class="form-group">
+                                <label class="form-label">Weight (kg)</label>
+                                <input type="number" class="form-input" id="input-weight" value="70" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">eGFR (mL/min)</label>
+                                <input type="number" class="form-input" id="input-egfr" value="90" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Co-medications</label>
+                                <input type="number" class="form-input" id="input-meds" value="2" min="0" max="20">
+                            </div>
+                        </div>
+
+                        <h4 style="margin: var(--space-lg) 0 var(--space-md); color: var(--accent-teal);">
+                            🧬 Pharmacogene Phenotypes
+                        </h4>
+
+                        <div class="grid grid-4" id="gene-selectors">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: var(--space-lg);">
+                            🔬 Predict ADR Risk
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Demo Tab -->
+            <div class="tab-content" id="tab-demo">
+                <div class="grid grid-2 stagger" id="demo-cards">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ RESULTS SECTION ═══════════════ -->
+    <section id="results" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>📊 <span class="gradient-text">Prediction Results</span></h2>
+                <p>ADR risk assessment with SHAP explanations and clinical recommendations.</p>
+            </div>
+
+            <!-- Loading -->
+            <div class="loader" id="results-loader">
+                <div class="pill-loader"></div>
+            </div>
+
+            <!-- Results Content -->
+            <div class="results-panel" id="results-content">
+                <!-- Risk Gauge + Summary Row -->
+                <div class="grid grid-2 mb-lg">
+                    <div class="glass-card reveal">
+                        <h3 class="text-center mb-lg">ADR Risk Assessment</h3>
+                        <div class="risk-gauge-container">
+                            <div class="risk-gauge">
+                                <svg viewBox="0 0 200 100">
+                                    <path class="gauge-bg" d="M 20 90 A 80 80 0 0 1 180 90" />
+                                    <path class="gauge-fill" id="gauge-fill" d="M 20 90 A 80 80 0 0 1 180 90" />
+                                </svg>
+                            </div>
+                            <div class="risk-value" id="risk-value">0%</div>
+                            <div class="risk-label" id="risk-label">Analyzing...</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card reveal">
+                        <h3 class="mb-lg">Drug Information</h3>
+                        <div id="drug-info-panel">
+                            <p style="color: var(--text-secondary);">Submit a prediction to see results.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gene Interactions -->
+                <div class="glass-card reveal mb-lg">
+                    <h3 class="mb-lg">🧬 Gene-Drug Interactions</h3>
+                    <div id="gene-interactions-panel" class="stagger">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- SHAP Explanation -->
+                <div class="glass-card reveal mb-lg">
+                    <h3 class="mb-lg">🔍 Why This Prediction? (SHAP Explanation)</h3>
+                    <div id="shap-chart">
+                        <p style="color: var(--text-secondary);">SHAP explanations will appear here after prediction.</p>
+                    </div>
+                </div>
+
+                <!-- Dosing Recommendations -->
+                <div class="glass-card reveal mb-lg">
+                    <h3 class="mb-lg">💊 Clinical Recommendations</h3>
+                    <div id="dosing-panel">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Monitoring -->
+                <div class="glass-card reveal">
+                    <h3 class="mb-lg">📋 Monitoring Plan</h3>
+                    <div id="monitoring-panel">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- No Results Placeholder -->
+            <div id="no-results" class="glass-card text-center" style="padding: 80px 20px;">
+                <span style="font-size: 4rem; display: block; margin-bottom: 16px;">🔬</span>
+                <h3 style="margin-bottom: 8px;">No Analysis Yet</h3>
+                <p style="color: var(--text-secondary);">Go to the <strong>Analyze</strong> section to submit patient data and get ADR predictions.</p>
+                <button class="btn btn-primary mt-lg" onclick="scrollToSection('input')">Start Analysis →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ DRUG LOOKUP SECTION ═══════════════ -->
+    <section id="drugs" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>💊 <span class="gradient-text">Drug Database</span></h2>
+                <p>Search our pharmacogenomic drug database to explore gene interactions and ADR profiles.</p>
+            </div>
+
+            <div class="search-container reveal">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="drug-search" placeholder="Search drugs by name, class, or indication...">
+            </div>
+
+            <div class="grid grid-3 stagger" id="drug-grid">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Drug Detail Modal -->
+            <div class="glass-card mt-xl" id="drug-detail" style="display: none;">
+                <div id="drug-detail-content"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FAIRNESS SECTION ═══════════════ -->
+    <section id="fairness" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>⚖️ <span class="gradient-text">Fairness Audit</span></h2>
+                <p>Model performance across populations — ensuring equitable drug safety for everyone.</p>
+            </div>
+
+            <div class="grid grid-2 mb-lg reveal">
+                <div class="glass-card">
+                    <h3 class="mb-lg">Population Performance</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="fairness-chart"></canvas>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h3 class="mb-lg">Fairness Metrics</h3>
+                    <div id="fairness-metrics-panel">
+                        <p style="color: var(--text-secondary);">Run the pipeline to see fairness results.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card reveal">
+                <h3 class="mb-lg">Training Performance by Drug</h3>
+                <div class="chart-wrapper">
+                    <canvas id="training-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer style="text-align: center; padding: 40px 20px; border-top: 1px solid var(--border-glass); color: var(--text-muted); font-size: 0.85rem;">
+        <p>⚠️ <strong>Research Use Only</strong> — Not for clinical decision-making.</p>
+        <p style="margin-top: 8px;">Built by <strong style="color: var(--text-primary);">Shriyadita Srinivaas</strong> • PharmacoSafe v1.0.0</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/particles.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/charts.js"></script>
+    <script src="/static/js/upload.js"></script>
+    <script src="/static/js/animations.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

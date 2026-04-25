@@ -1,0 +1,468 @@
+/* ══════════════════════════════════════════════════════════════
+   PharmacoSafe — Component Styles
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Hero Section ────────────────────────────────────────────── */
+#hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+    position: relative;
+    padding-top: 60px;
+}
+
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    animation: fadeInUp 1s ease 0.3s both;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: var(--space-lg);
+    line-height: 1.1;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2xl);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-stats {
+    display: flex;
+    gap: var(--space-2xl);
+    justify-content: center;
+    margin-top: var(--space-2xl);
+    animation: fadeInUp 1s ease 0.6s both;
+}
+
+.hero-stat {
+    text-align: center;
+}
+
+.hero-stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+}
+
+.hero-stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.hero-cta {
+    animation: fadeInUp 1s ease 0.5s both;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: float 2s ease-in-out infinite;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+    z-index: 1;
+}
+
+.scroll-arrow {
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin: 8px auto 0;
+    border-right: 2px solid var(--text-muted);
+    border-bottom: 2px solid var(--text-muted);
+    transform: rotate(45deg);
+}
+
+/* ── Upload Zone ─────────────────────────────────────────────── */
+.upload-zone {
+    border: 2px dashed var(--border-glass);
+    border-radius: var(--radius-xl);
+    padding: var(--space-3xl) var(--space-xl);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--accent-teal);
+    background: rgba(0, 245, 212, 0.03);
+    animation: uploadPulse 2s ease-in-out infinite;
+}
+
+.upload-zone.dragover {
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-md);
+    display: block;
+}
+
+.upload-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.upload-text strong {
+    color: var(--accent-teal);
+}
+
+.upload-formats {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: var(--space-sm);
+}
+
+.upload-file-input {
+    display: none;
+}
+
+.file-preview {
+    display: none;
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    background: var(--bg-glass);
+    border-radius: var(--radius-md);
+    text-align: left;
+}
+
+.file-preview.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+/* ── Risk Gauge ──────────────────────────────────────────────── */
+.risk-gauge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-xl);
+}
+
+.risk-gauge {
+    position: relative;
+    width: 200px;
+    height: 100px;
+    overflow: hidden;
+}
+
+.risk-gauge svg {
+    width: 200px;
+    height: 100px;
+}
+
+.gauge-bg {
+    fill: none;
+    stroke: var(--bg-glass);
+    stroke-width: 12;
+}
+
+.gauge-fill {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+                stroke 0.5s ease;
+}
+
+.risk-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    margin-top: var(--space-md);
+}
+
+.risk-label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: var(--space-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* ── Drug Card ───────────────────────────────────────────────── */
+.drug-card {
+    padding: var(--space-lg);
+    cursor: pointer;
+}
+
+.drug-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+}
+
+.drug-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.drug-class {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.drug-genes {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+    margin-top: var(--space-sm);
+}
+
+.gene-tag {
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: rgba(123, 47, 247, 0.15);
+    color: var(--accent-violet);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+}
+
+/* ── Results Panel ───────────────────────────────────────────── */
+.results-panel {
+    display: none;
+}
+
+.results-panel.active {
+    display: block;
+    animation: fadeInUp 0.5s ease;
+}
+
+.recommendation-card {
+    border-left: 3px solid var(--accent-teal);
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-md);
+    background: var(--bg-glass);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.recommendation-card.warning {
+    border-left-color: var(--risk-moderate);
+}
+
+.recommendation-card.danger {
+    border-left-color: var(--risk-critical);
+}
+
+.recommendation-source {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.recommendation-text {
+    margin-top: var(--space-xs);
+    font-size: 0.95rem;
+}
+
+/* ── SHAP Chart ──────────────────────────────────────────────── */
+.shap-bar-container {
+    margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.shap-feature-name {
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    min-width: 160px;
+    text-align: right;
+}
+
+.shap-bar-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    height: 24px;
+    position: relative;
+}
+
+.shap-bar-center {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-glass);
+}
+
+.shap-bar {
+    height: 20px;
+    border-radius: 4px;
+    position: absolute;
+    top: 2px;
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shap-bar.positive {
+    left: 50%;
+    background: var(--gradient-danger);
+}
+
+.shap-bar.negative {
+    right: 50%;
+    background: var(--gradient-success);
+}
+
+.shap-value {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    min-width: 60px;
+}
+
+/* ── Demo Patient Cards ──────────────────────────────────────── */
+.demo-card {
+    cursor: pointer;
+    padding: var(--space-lg);
+    transition: all var(--transition-normal);
+}
+
+.demo-card:hover {
+    border-color: var(--accent-teal);
+    transform: translateY(-4px);
+}
+
+.demo-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background: var(--gradient-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+}
+
+.demo-name {
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+}
+
+.demo-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* ── Fairness Charts ─────────────────────────────────────────── */
+.fairness-chart-container {
+    padding: var(--space-lg);
+}
+
+.fairness-metric-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.fairness-metric-name {
+    font-weight: 600;
+    min-width: 180px;
+}
+
+.fairness-bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--bg-glass);
+    border-radius: 4px;
+    margin: 0 var(--space-lg);
+    overflow: hidden;
+}
+
+.fairness-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fairness-status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 60px;
+    text-align: right;
+}
+
+/* ── Drug Search ─────────────────────────────────────────────── */
+.search-container {
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto var(--space-2xl);
+}
+
+.search-input {
+    width: 100%;
+    padding: 16px 20px 16px 48px;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-xl);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: var(--font-body);
+    outline: none;
+    transition: all var(--transition-normal);
+}
+
+.search-input:focus {
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 0 4px rgba(0, 245, 212, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+/* ── Chart Canvas ────────────────────────────────────────────── */
+.chart-wrapper {
+    position: relative;
+    padding: var(--space-md);
+    background: var(--bg-glass);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-lg);
+}
+
+.chart-wrapper canvas {
+    max-height: 350px;
+}
